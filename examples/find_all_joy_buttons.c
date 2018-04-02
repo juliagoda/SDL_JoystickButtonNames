@@ -1,9 +1,15 @@
 #include <stdio.h>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_joystick.h>
+#include <SDL2/SDL_gamecontroller.h>
 
-#include <SDL_joystickbuttonnames.h>
-
+int SDLJBN_Init(void);
+const char * SDLJBN_GetError(void);
+int SDLJBN_AddMappingsFromFile(const char* file);
+int SDLJBN_GetButtonNameAndColor(SDL_Joystick* joystick, SDL_GameControllerButton button, char *s, Uint8* red, Uint8* green, Uint8* blue);
+int SDLJBN_GetAxisNameAndColor(SDL_Joystick* joystick, SDL_GameControllerButton button, char *s, Uint8* red, Uint8* green, Uint8* blue);
+void SDLJBN_Quit(void);
 
 // Detect all the currently connected joysticks and write a HTML page showing
 // their names, buttons and button colors.
@@ -32,7 +38,7 @@ int main(int argc, char *argv[])
 		printf("Cannot load controller mappings file: %s\n", SDL_GetError());
 		goto bail;
 	}
-	int read = SDLJBN_AddMappingsFromFile("../gamecontrollerbuttondb.txt");
+    int read = SDLJBN_AddMappingsFromFile("../gamecontrollerbuttondb.txt");
 	if (read == -1)
 	{
 		printf("Cannot load button mappings file: %s\n", SDLJBN_GetError());
@@ -55,7 +61,7 @@ int main(int argc, char *argv[])
 	fprintf(f, "<body><h1>%d joystick(s) detected</h1>", numJoysticks);
 	for (int i = 0; i < numJoysticks; i++)
 	{
-		fprintf(f, "<h2>Joystick %d: ", i);
+        fprintf(f, "<h2>Joystick %d: ", (i+1));
 		if (!SDL_IsGameController(i))
 		{
 			fprintf(f, "Not a game controller</h2>");
@@ -96,6 +102,8 @@ int main(int argc, char *argv[])
 			}
 			fprintf(f, "<span style=\"color: rgb(%d,%d,%d)\">%s</span> ",
 				r, g, b, buf);
+
+            printf("Button: %s [R: %d, G: %d, B %d], ", buf, r, g, b);
 		}
 
 		for (SDL_GameControllerAxis axis = SDL_CONTROLLER_AXIS_LEFTX;
@@ -111,6 +119,8 @@ int main(int argc, char *argv[])
 			}
 			fprintf(f, "<span style=\"color: rgb(%d,%d,%d)\">%s</span> ",
 				r, g, b, buf);
+
+            printf("Axis: %s [R: %d, G: %d, B %d], ", buf, r, g, b);
 		}
 
 		fprintf(f, "</div>");

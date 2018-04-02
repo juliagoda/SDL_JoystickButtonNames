@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <SDL_pixels.h>
+#include <SDL2/SDL_pixels.h>
 
 
 typedef struct
@@ -110,7 +110,10 @@ int SDLJBN_AddMappingsFromFile(const char *file)
 	ret = ReadMappingsString(s);
 
 bail:
-	SDL_RWclose(rwops);
+	if (rwops != NULL)
+	{
+		SDL_RWclose(rwops);
+	}
 	SDL_free(s);
 	return ret;
 }
@@ -134,12 +137,12 @@ static int ReadMappingsString(const char *s)
 	// Search for a matching GUID + joystickName in the db
 	int read = 0;
 	for (const char *cur = s; cur;)
-	{
-		const char *nl = strchr(cur, '\n');
-		char line[2048];
+    {
+        const char *nl = strchr(cur, '\n');
+        char line[2048];
 		READ_TOKEN(line, cur, nl);
 
-		char buf[256];
+        char buf[256];
 
 		// Check for the platform string
 		sprintf(buf, "platform:%s", SDL_GetPlatform());
@@ -157,13 +160,13 @@ static int ReadMappingsString(const char *s)
 
 		// Read GUID
 		nextComma = strchr(curL, ',');
-		if (nextComma == NULL || cur == nextComma) continue;
+        if ((nextComma == NULL) || (cur == nextComma)) continue;
 		READ_TOKEN(buf, curL, nextComma);
 		j.guid = SDL_JoystickGetGUIDFromString(buf);
 
 		// Read joystick name
 		nextComma = strchr(curL, ',');
-		if (nextComma == NULL || curL == nextComma) continue;
+        if ((nextComma == NULL) || (curL == nextComma)) continue;
 		READ_TOKEN(j.joystickName, curL, nextComma);
 
 		// Check if GUID+joystick name already exists
@@ -171,8 +174,8 @@ static int ReadMappingsString(const char *s)
 		for (int i = 0; i < nJBN; i++)
 		{
 			const JoystickButtonNames *jp = jbn + i;
-			if (memcmp(&jp->guid, &j.guid, sizeof j.guid) == 0 &&
-				strcmp(jp->joystickName, j.joystickName) == 0)
+            if ((memcmp(&jp->guid, &j.guid, sizeof j.guid) == 0) &&
+                (strcmp(jp->joystickName, j.joystickName) == 0))
 			{
 				exists = true;
 				break;
@@ -189,7 +192,7 @@ static int ReadMappingsString(const char *s)
 			const char *nextColon;
 
 			nextColon = strchr(curL, ':');
-			if (nextColon == NULL || curL == nextColon) continue;
+            if ((nextColon == NULL) || (curL == nextColon)) continue;
 			READ_TOKEN(buf, curL, nextColon);
 			const SDL_GameControllerButton button =
 				SDL_GameControllerGetButtonFromString(buf);
@@ -354,8 +357,8 @@ int SDLJBN_GetButtonNameAndColor(SDL_Joystick *joystick,
 		err = "joystick is NULL";
 		return -1;
 	}
-	if (button < SDL_CONTROLLER_BUTTON_A ||
-		button >= SDL_CONTROLLER_BUTTON_MAX)
+    if ((button < SDL_CONTROLLER_BUTTON_A) ||
+        (button >= SDL_CONTROLLER_BUTTON_MAX))
 	{
 		err = "button is invalid";
 		return -1;
@@ -372,11 +375,11 @@ int SDLJBN_GetButtonNameAndColor(SDL_Joystick *joystick,
 	for (int i = 0; i < nJBN; i++)
 	{
 		const JoystickButtonNames *j = jbn + i;
-		if (memcmp(&j->guid, &guid, sizeof guid) == 0 &&
-			strcmp(j->joystickName, joystickName) == 0)
+        if ((memcmp(&j->guid, &guid, sizeof guid) == 0) &&
+            (strcmp(j->joystickName, joystickName) == 0))
 		{
 			// GUID and joystick name match; read name and colors
-			if (s && strlen(j->buttonNames[(int)button]) > 0)
+            if (s && (strlen(j->buttonNames[(int)button]) > 0))
 				strcpy(s, j->buttonNames[(int)button]);
 			if (r) *r = j->buttonColors[(int)button].r;
 			if (g) *g = j->buttonColors[(int)button].g;
@@ -400,7 +403,7 @@ int SDLJBN_GetAxisNameAndColor(SDL_Joystick *joystick,
 		err = "joystick is NULL";
 		return -1;
 	}
-	if (axis < SDL_CONTROLLER_AXIS_LEFTX || axis >= SDL_CONTROLLER_AXIS_MAX)
+    if ((axis < SDL_CONTROLLER_AXIS_LEFTX) || (axis >= SDL_CONTROLLER_AXIS_MAX))
 	{
 		err = "axis is invalid";
 		return -1;
@@ -417,8 +420,8 @@ int SDLJBN_GetAxisNameAndColor(SDL_Joystick *joystick,
 	for (int i = 0; i < nJBN; i++)
 	{
 		const JoystickButtonNames *j = jbn + i;
-		if (memcmp(&j->guid, &guid, sizeof guid) == 0 &&
-			strcmp(j->joystickName, joystickName) == 0)
+        if ((memcmp(&j->guid, &guid, sizeof guid) == 0) &&
+            (strcmp(j->joystickName, joystickName) == 0))
 		{
 			// GUID and joystick name match; read name and colors
 			if (s && strlen(j->axisNames[(int)axis]) > 0)

@@ -25,7 +25,7 @@
 #ifndef _SDL_joystickbuttonnames_h
 #define _SDL_joystickbuttonnames_h
 
-#include <SDL_gamecontroller.h>
+#include <SDL2/SDL_gamecontroller.h>
 
 #ifdef __cplusplus
 extern "C" {
