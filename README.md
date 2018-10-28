@@ -101,6 +101,18 @@ On joystick 1, axis Y of right trigger is "Right Stick Y" with color rgb(96,128,
 
 ```
 
+However it would be better to execute this, whenever you just want to know your device's GUID:
+
+`./checkGuid`
+
+in my case the result would be:
+
+```
+Platform: Linux
+(Name: Logitech Logitech Dual Action | GUID: 030000006d04000016c2000011010000)
+```
+
+
 # Getting started
 
 - Include the library in your SDL2 + CMake project, or if you are using a different build system, include `SDL_joystickbuttonnames.c` and `SDL_joystickbuttonnames.h` in your project

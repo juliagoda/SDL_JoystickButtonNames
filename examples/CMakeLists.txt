@@ -39,6 +39,9 @@ if (SDL2_FOUND)
 
     add_executable(minimal minimal.c)
     target_link_libraries(minimal SDL_joystickbuttonnames ${SDL2_LIBRARIES})
+    
+    add_executable(checkGuid check_guid.c)
+    target_link_libraries(checkGuid SDL_joystickbuttonnames ${SDL2_LIBRARIES})
 elseif(SDL_FOUND)
     add_executable(find_all_joy_buttons find_all_joy_buttons.c)
     target_link_libraries(find_all_joy_buttons SDL_joystickbuttonnames ${SDL_LIBRARY})
