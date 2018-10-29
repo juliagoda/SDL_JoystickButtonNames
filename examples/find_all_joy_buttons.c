@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
 	// Load game controller mappings
 	// https://github.com/gabomdq/SDL_GameControllerDB
-	if (SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt") == -1)
+	if (SDL_GameControllerAddMappingsFromFile("../gamecontrollerdb.txt") == -1)
 	{
 		printf("Cannot load controller mappings file: %s\n", SDL_GetError());
 		goto bail;

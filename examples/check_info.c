@@ -67,8 +67,11 @@ int main(int argc, char *argv[])
 
 		char buf[256];
 		SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(j), buf, 256);
-		fprintf(f, "(Name: %s | GUID: %s):", SDL_JoystickName(j), buf);
-        printf("(Name: %s | GUID: %s)\n", SDL_JoystickName(j), buf);
+		fprintf(f, "Name: %s\nGUID: %s\n", SDL_JoystickName(j), buf);
+        printf("Name: %s\nGUID: %s\n", SDL_JoystickName(j), buf);
+        printf("\nVendor: %u (%#.4x)\n", SDL_GameControllerGetVendor(gc), SDL_GameControllerGetVendor(gc));
+        printf("Product: %u (%#.4x)\n", SDL_GameControllerGetProduct(gc), SDL_GameControllerGetProduct(gc)); 
+        printf("Product Version: %u (%#.4x)\n", SDL_GameControllerGetProductVersion(gc), SDL_GameControllerGetProductVersion(gc));
 
 		SDL_GameControllerClose(gc);
 	}

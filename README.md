@@ -101,15 +101,56 @@ On joystick 1, axis Y of right trigger is "Right Stick Y" with color rgb(96,128,
 
 ```
 
-However it would be better to execute this, whenever you just want to know your device's GUID:
+You can execute another file with no information about RGB too:
 
-`./checkGuid`
+`./minimalWithoutRGB`
+
+result:
+
+```
+Logitech Logitech Dual Action
+
+BUTTONS
+
+On joystick 1, button X is "X"On joystick 1, button A is "A" 
+On joystick 1, button B is "B" 
+On joystick 1, button Y is "Y" 
+On joystick 1, button Back is "Back" 
+On joystick 1, button Start is "Start" 
+On joystick 1, left shoulder is "LB" 
+On joystick 1, left shoulder is "RB" 
+On joystick 1, left stick is "Left Stick" 
+On joystick 1, right stick is "Right Stick" 
+On joystick 1, button Up is "D-pad Up" 
+On joystick 1, button Down is "D-pad Down" 
+On joystick 1, button Left is "D-pad Left" 
+On joystick 1, button Right is "D-pad Right" 
+
+
+AXES
+
+On joystick 1, left trigger is "LT" 
+On joystick 1, right trigger is "RT" 
+On joystick 1, axis X of left trigger is "Left Stick X" 
+On joystick 1, axis Y of left trigger is "Left Stick Y" 
+On joystick 1, axis X of right trigger is "Right Stick X" 
+On joystick 1, axis Y of right trigger is "Right Stick Y" 
+```
+
+However it would be better to execute this, whenever you just want to know Vendor ID, Product ID, Product Version or GUID:
+
+`./checkInfo`
 
 in my case the result would be:
 
 ```
 Platform: Linux
-(Name: Logitech Logitech Dual Action | GUID: 030000006d04000016c2000011010000)
+Name: Logitech Logitech Dual Action
+GUID: 030000006d04000016c2000011010000
+
+Vendor: 1133 (0x046d)
+Product: 49686 (0xc216)
+Product Version: 273 (0x0111)
 ```
 
 

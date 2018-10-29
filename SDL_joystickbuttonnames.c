@@ -392,6 +392,48 @@ int SDLJBN_GetButtonNameAndColor(SDL_Joystick *joystick,
 }
 
 
+int SDLJBN_GetButtonName(SDL_Joystick *joystick,
+                        SDL_GameControllerButton button,
+                        char *s)
+{
+	SDLJBN_Init();
+
+	if (joystick == NULL)
+	{
+		err = "joystick is NULL";
+		return -1;
+	}
+    if ((button < SDL_CONTROLLER_BUTTON_A) ||
+        (button >= SDL_CONTROLLER_BUTTON_MAX))
+	{
+		err = "button is invalid";
+		return -1;
+	}
+	// Use defaults first
+	if (s) strcpy(s, jDefault.buttonNames[(int)button]);
+
+	const SDL_JoystickGUID guid = SDL_JoystickGetGUID(joystick);
+	const char *joystickName = SDL_JoystickName(joystick);
+    
+	// Search for a matching GUID + joystickName in the db
+	for (int i = 0; i < nJBN; i++)
+	{
+		const JoystickButtonNames *j = jbn + i;
+        if ((memcmp(&j->guid, &guid, sizeof guid) == 0) &&
+            (strcmp(j->joystickName, joystickName) == 0))
+		{
+			// GUID and joystick name match; read name
+            if (s && (strlen(j->buttonNames[(int)button]) > 0))
+				strcpy(s, j->buttonNames[(int)button]);
+
+			break;
+		}
+	}
+
+	return 0;
+}
+
+
 int SDLJBN_GetAxisNameAndColor(SDL_Joystick *joystick,
                                SDL_GameControllerAxis axis,
                                char *s, Uint8 *r, Uint8 *g, Uint8 *b)
@@ -429,6 +471,46 @@ int SDLJBN_GetAxisNameAndColor(SDL_Joystick *joystick,
 			if (r) *r = j->axisColors[(int)axis].r;
 			if (g) *g = j->axisColors[(int)axis].g;
 			if (b) *b = j->axisColors[(int)axis].b;
+			break;
+		}
+	}
+
+	return 0;
+}
+
+int SDLJBN_GetAxisName(SDL_Joystick *joystick,
+                        SDL_GameControllerAxis axis,
+                        char *s)
+{
+	SDLJBN_Init();
+
+	if (joystick == NULL)
+	{
+		err = "joystick is NULL";
+		return -1;
+	}
+    if ((axis < SDL_CONTROLLER_AXIS_LEFTX) || (axis >= SDL_CONTROLLER_AXIS_MAX))
+	{
+		err = "axis is invalid";
+		return -1;
+	}
+	// Use defaults first
+	if (s) strcpy(s, jDefault.axisNames[(int)axis]);
+
+	const SDL_JoystickGUID guid = SDL_JoystickGetGUID(joystick);
+	const char *joystickName = SDL_JoystickName(joystick);
+    
+	// Search for a matching GUID + joystickName in the db
+	for (int i = 0; i < nJBN; i++)
+	{
+		const JoystickButtonNames *j = jbn + i;
+        if ((memcmp(&j->guid, &guid, sizeof guid) == 0) &&
+            (strcmp(j->joystickName, joystickName) == 0))
+		{
+			// GUID and joystick name match; read name and colors
+			if (s && strlen(j->axisNames[(int)axis]) > 0)
+				strcpy(s, j->axisNames[(int)axis]);
+
 			break;
 		}
 	}

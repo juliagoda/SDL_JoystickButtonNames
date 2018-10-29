@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	SDL_Init(SDL_INIT_GAMECONTROLLER);
 	SDLJBN_Init();
 
-    SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt");
+    SDL_GameControllerAddMappingsFromFile("../gamecontrollerdb.txt");
     SDLJBN_AddMappingsFromFile("../gamecontrollerbuttondb.txt");
 
 	for (int i = 0; i < SDL_NumJoysticks(); i++)
